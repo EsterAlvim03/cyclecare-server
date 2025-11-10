@@ -1,5 +1,6 @@
 package br.com.umc.cyclecare.controllers;
 
+import br.com.umc.cyclecare.daos.UserDao;
 import br.com.umc.cyclecare.models.DomainEntity;
 import br.com.umc.cyclecare.models.User;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final Controller controller;
+    private final UserDao userDao;
 
     @GetMapping
     public ResponseEntity<?> getUser(@AuthenticationPrincipal String id) {
         try {
             User user = new User();
             user.setId(id);
-            DomainEntity userResp = controller.read(user);
+            DomainEntity userResp = userDao.read(user);
             return ResponseEntity.ok(userResp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -30,7 +31,7 @@ public class UserController {
     public ResponseEntity<?> updateUser(@AuthenticationPrincipal String id, @RequestBody User user) {
         try {
             user.setId(id);
-            DomainEntity respUser = controller.update(user);
+            DomainEntity respUser = userDao.update(user);
             return ResponseEntity.ok(respUser);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -42,7 +43,7 @@ public class UserController {
         try {
             User user = new User();
             user.setId(id);
-            controller.delete(user);
+            userDao.delete(user);
             return ResponseEntity.ok(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

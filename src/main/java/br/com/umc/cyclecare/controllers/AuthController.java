@@ -1,6 +1,7 @@
 package br.com.umc.cyclecare.controllers;
 
 import br.com.umc.cyclecare.daos.AuthDao;
+import br.com.umc.cyclecare.daos.UserDao;
 import br.com.umc.cyclecare.dtos.AuthRequest;
 import br.com.umc.cyclecare.dtos.GoogleUserInfo;
 import br.com.umc.cyclecare.dtos.JwtResponse;
@@ -17,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
     private final GoogleAuthService googleAuthService;
-    private final Controller controller;
+    private final UserDao userDao;
     private final AuthDao authDao;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
-            DomainEntity userResp = controller.create(user);
+            DomainEntity userResp = userDao.create(user);
             return ResponseEntity.ok(userResp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -63,7 +64,7 @@ public class AuthController {
             User user = new User();
             user.setEmail(auth.getEmail());
 
-            controller.update(user);
+            userDao.update(user);
 
             return ResponseEntity.ok(null);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package br.com.umc.cyclecare.controllers;
 
+import br.com.umc.cyclecare.daos.CycleDao;
 import br.com.umc.cyclecare.models.Cycle;
 import br.com.umc.cyclecare.models.DomainEntity;
 import br.com.umc.cyclecare.models.User;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/cycles")
 @RequiredArgsConstructor
 public class CycleController {
-    private final Controller controller;
+    private final CycleDao cycleDao;
 
     @GetMapping
     public ResponseEntity<?> getCycles(@AuthenticationPrincipal String id) {
@@ -26,7 +27,7 @@ public class CycleController {
             Cycle cycle = new Cycle();
             cycle.setUser(user);
 
-            List<DomainEntity> cyclesResp = controller.listAll(cycle);
+            List<DomainEntity> cyclesResp = cycleDao.listAll(cycle);
             return ResponseEntity.ok(cyclesResp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -39,7 +40,7 @@ public class CycleController {
             Cycle cycle = new Cycle();
             cycle.setId(id);
 
-            DomainEntity cyclesResp = controller.read(cycle);
+            DomainEntity cyclesResp = cycleDao.read(cycle);
             return ResponseEntity.ok(cyclesResp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -54,7 +55,7 @@ public class CycleController {
 
             cycle.setUser(user);
 
-            DomainEntity cycleResp = controller.create(cycle);
+            DomainEntity cycleResp = cycleDao.create(cycle);
 
             return ResponseEntity.ok(cycleResp);
         } catch (Exception e) {
@@ -68,7 +69,7 @@ public class CycleController {
             Cycle cycle = new Cycle();
             cycle.setId(id);
 
-            controller.delete(cycle);
+            cycleDao.delete(cycle);
 
             return ResponseEntity.ok(null);
         } catch (Exception e) {
@@ -81,7 +82,7 @@ public class CycleController {
         try {
             cycle.setId(id);
 
-            DomainEntity cycleResp = controller.update(cycle);
+            DomainEntity cycleResp = cycleDao.update(cycle);
 
             return ResponseEntity.ok(cycleResp);
         } catch (Exception e) {

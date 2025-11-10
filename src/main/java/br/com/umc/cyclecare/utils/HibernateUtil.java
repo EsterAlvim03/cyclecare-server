@@ -1,6 +1,5 @@
 package br.com.umc.cyclecare.utils;
 
-
 import br.com.umc.cyclecare.models.Cycle;
 import br.com.umc.cyclecare.models.Term;
 import br.com.umc.cyclecare.models.User;
@@ -20,8 +19,8 @@ public class HibernateUtil {
         try {
             sessionFactory = new MetadataSources(registry)
                     .addAnnotatedClass(User.class)
-                    .addAnnotatedClass(Cycle.class)
                     .addAnnotatedClass(Term.class)
+                    .addAnnotatedClass(Cycle.class)
                     .buildMetadata()
                     .buildSessionFactory();
 
@@ -30,4 +29,5 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError("Erro ao inicializar o Hibernate: " + e);
         }
     }
+
 }

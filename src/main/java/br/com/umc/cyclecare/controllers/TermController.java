@@ -1,5 +1,6 @@
 package br.com.umc.cyclecare.controllers;
 
+import br.com.umc.cyclecare.daos.TermDao;
 import br.com.umc.cyclecare.models.DomainEntity;
 import br.com.umc.cyclecare.models.Term;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/terms")
 @RequiredArgsConstructor
 public class TermController {
-    private final Controller controller;
+    private final TermDao termDao;
 
     @GetMapping
     public ResponseEntity<?> getTerm() {
@@ -19,7 +20,7 @@ public class TermController {
             Term term = new Term();
             term.setActive(true);
 
-            DomainEntity termResp = controller.read(term);
+            DomainEntity termResp = termDao.read(term);
             return ResponseEntity.ok(termResp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -29,7 +30,7 @@ public class TermController {
     @PostMapping
     public ResponseEntity<?> register(@RequestBody Term term) {
         try {
-            DomainEntity userResp = controller.create(term);
+            DomainEntity userResp = termDao.create(term);
             return ResponseEntity.ok(userResp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
