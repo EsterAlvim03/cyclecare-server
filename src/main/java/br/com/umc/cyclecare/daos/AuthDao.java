@@ -49,10 +49,8 @@ public class AuthDao {
                 return JwtUtil.generateToken(respUser.getId());
             }
 
-            if (user.getGoogleAccessToken() == null) {
-                user.setGoogleAccessToken(accessToken);
-                userDao.update(user);
-            }
+            user.setGoogleAccessToken(accessToken);
+            userDao.update(user);
 
             return JwtUtil.generateToken(user.getId());
         } catch (Exception e) {
