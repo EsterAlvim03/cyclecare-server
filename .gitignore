@@ -1,3 +1,4 @@
 target/
 build/
 .env
+src/main/resources
